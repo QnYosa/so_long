@@ -1,0 +1,15 @@
+int	mlx_mouse_hook (void *win_ptr, int (*funct_ptr)(), void *param);
+int	mlx_key_hook (void *win_ptr, int (*funct_ptr)(), void *param);
+int	mlx_expose_hook (void *win_ptr, int (*funct_ptr)(), void *param);
+int	mlx_loop_hook (void *mlx_ptr, int (*funct_ptr)(), void *param);
+int	mlx_hook(void *win_ptr, int x_event, int x_mask, int (*funct)(), void *param);
+
+win_ptr is the pointer to a window. This window will register for the given event.
+
+func_ptr is a pointer to a function that returns an int and that takes undefined parameters.
+Beware, (*func_ptr)() is not the same as (*func_ptr)(void): 
+the last means NO argument while the first means "any set of arguments".
+
+param is the address of an element you would want to access in your func_ptr 
+when you'll be handling events. The minilibx doesn't use param whatsoever,
+that's just a way to help you pass arguments.

@@ -1,0 +1,9 @@
+wayland alternative a x11
+
+mlx_init returns the adress of a t_xvar but as a void pointer.
+
+display = connexion identifier used to communicate with the X Server.
+
+mlx_loop permet de faire tourner le programme jusqu' a un certain event
+
+mlx_*hook ce sont les events en question.

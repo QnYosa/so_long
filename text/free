@@ -1,0 +1,3 @@
+in order to free I need to use first:
+	mlx_destroy_display() and then free()
+mlx_destroy_display accesses the display variable of our pointer. 
