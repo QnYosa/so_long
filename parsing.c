@@ -6,14 +6,14 @@
 /*   By: dyoula <dyoula@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/10 18:42:01 by dyoula            #+#    #+#             */
-/*   Updated: 2022/01/15 22:22:48 by dyoula           ###   ########.fr       */
+/*   Updated: 2022/01/15 22:40:14 by dyoula           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
 /* premiere ligne = que des 1 
-** toujours la meme len **
+** toujours la meme len ** done
 ** un seul personnage sinon on quit (seul truc unique)**
 ** doit commencer et se terminer par un 1 **
 ** s'assurer qu'il n'y a que des caracteres autorises **
@@ -63,6 +63,19 @@ int	error_messages_parser(int n)
 	}
 	else
 		return (1);
+}
+
+int	playable(char **map)
+{
+	int	i;
+	int	j;
+	int	p;
+
+	i = -1;
+	while (map[++i])
+	{
+		j = -1;
+	}
 }
 
 int	check_errors(t_game *g)
