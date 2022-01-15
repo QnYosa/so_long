@@ -6,7 +6,7 @@
 /*   By: dyoula <dyoula@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/25 19:48:45 by dyoula            #+#    #+#             */
-/*   Updated: 2022/01/10 19:54:09 by dyoula           ###   ########.fr       */
+/*   Updated: 2022/01/15 21:58:39 by dyoula           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,12 @@ int	main(int argc, char **argv)
 	t_data	data;
 	t_game	g;
 
-	init_parse(&g, argc, argv);
-	parsing_maestro(&g);
+	if (argc != 2)
+		return (0);
+	init_struct(&g, argc, argv);
+	printf("Tribal\n");
+	if (!parse_and_check_errors(&g))
+		return (-1);
 	data.mlx_ptr = mlx_init();
 	if (data.mlx_ptr == NULL)
 		return (-1);
@@ -47,7 +51,6 @@ int	main(int argc, char **argv)
 		free(data.win_ptr);
 		return (-1);
 	}
-	printf("%d\n", g.hola);
 	// mlx_loop_hook(data.mlx_ptr, &handle_no_event, &data);
 	// mlx_key_hook(data.win_ptr, &handle_input, &data);
 	// mlx_loop(data.mlx_ptr);

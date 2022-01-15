@@ -1,6 +1,6 @@
 NAME	= so_long
 
-SRCS	= main.c parsing.c init.c
+SRCS	= main.c parsing.c init.c init_struct.c
 
 OBJS	= ${SRCS:.c=.o}
 
@@ -22,10 +22,14 @@ $(NAME):	${OBJS}
 				@cp libft/*.h ./includes
 				@mv libft/libft.a .
 				${CC} ${CFLAGS} ${OBJS} libft.a -o ${NAME} ${FL_MLX}
-
+#MAC			$(CC) $(OBJ) -Lmlx -lmlx -framework OpenGL -framework AppKit -o $(NAME)
 .c.o:
 			${CC} ${CFLAGS} -c $< -o ${<:.c=.o}
 			$(CC) ${CFLAGS} -I/usr/include -Imlx_linux -O3 -c $< -o $@
+
+# Mac
+#%.o: %.c
+#	$(CC) -Wall -Wextra -Werror -Imlx -c $< -o $@
 
 
 $(LIBFT):
