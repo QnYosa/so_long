@@ -6,7 +6,7 @@
 /*   By: dyoula <dyoula@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/25 19:48:45 by dyoula            #+#    #+#             */
-/*   Updated: 2022/01/16 18:43:07 by dyoula           ###   ########.fr       */
+/*   Updated: 2022/01/16 19:27:06 by dyoula           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,21 +38,15 @@ int	check_errors(t_game *g)
 	i = 0;
 	while (g->map[i])
 		i++;
-	printf("max = %d\n", i);
 	if (!error_messages_parser(walls(g->map, i)) || !right_number_pce(g->map))
 		return (0);
-	// if (!playable(g->map))
-	// 	return (0);
-	printf("yo\n");
 	return (1);
 }
 
 int	check_file(char *file)
 {
 	if (open(file, O_RDONLY) == -1)
-	{
 		return (0);
-	}
 	return (1);
 }
 
@@ -64,7 +58,6 @@ int	main(int argc, char **argv)
 	if (argc != 2)
 		return (0);
 	init_struct(&g, argc, argv);
-	printf("Tribal\n");
 	if (!parse_and_check_errors(&g))
 		return (-1);
 	data.mlx_ptr = mlx_init();
