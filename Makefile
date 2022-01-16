@@ -1,6 +1,6 @@
 NAME	= so_long
 
-SRCS	= main.c parsing.c init.c init_struct.c
+SRCS	= main.c check_map_1.c init.c init_struct.c utils.c \
 
 OBJS	= ${SRCS:.c=.o}
 

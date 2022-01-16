@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsing.c                                          :+:      :+:    :+:   */
+/*   check_map_1.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dyoula <dyoula@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/10 18:42:01 by dyoula            #+#    #+#             */
-/*   Updated: 2022/01/15 22:40:14 by dyoula           ###   ########.fr       */
+/*   Updated: 2022/01/16 17:01:47 by dyoula           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	walls(char **map, int max)
 	{
 		if ((int)ft_strlen(map[i]) != size)
 			return (-1);
-		if (i == 0 || i == max)
+		if (i == 0 || i == max - 1)
 		{
 			j = -1;
 			while (map[i][++j])
@@ -53,7 +53,7 @@ int	error_messages_parser(int n)
 	}
 	else if (n == -2)
 	{
-		ft_putstr_fd("floor ? roof ?\n", 2);
+		ft_putstr_fd("error\n Missing wall in floor or roof ?\n", 2);
 		return (0);
 	}
 	else if (n == -3)
@@ -65,29 +65,66 @@ int	error_messages_parser(int n)
 		return (1);
 }
 
-int	playable(char **map)
+int	error_messages_game(int tab[3])
+{
+	if (tab[0] != 1)
+	{
+		ft_putstr_fd("error\nOnly one player accepted\n", 2);
+		return (0);
+	}
+	else if (tab[1] < 1)
+	{
+		ft_putstr_fd("error\nNo Collectibles\n", 2);
+		return (0);
+	}
+	else if (tab[2] < 1)
+	{
+		ft_putstr_fd("error\nNo exit\n", 2);
+		return (0);
+	}
+	return (1);
+}
+
+int	right_number_pce(char **map)
 {
 	int	i;
 	int	j;
-	int	p;
+	int	tab[3];
+
+	i = -1;
+	tab[0] = 0;
+	tab[1] = 0;
+	tab[2] = 0;
+	while (map[++i])
+	{
+		j = -1;
+		while (map[i][++j])
+		{
+			if (map[i][j] == 'P')
+				tab[0]++;
+			else if (map[i][j] == 'C')
+				tab[1]++;
+			else if (map[i][j] == 'E')
+				tab[2]++;
+		}
+	}
+	return (error_messages_game(tab));
+}
+
+int	forbidden_caracters(char **map)
+{
+	int	i;
+	int	j;
 
 	i = -1;
 	while (map[++i])
 	{
 		j = -1;
+		while (map[i][++j])
+		{
+			if (!is_part(map[i][j]))
+				return (0);
+		}
 	}
-}
-
-int	check_errors(t_game *g)
-{
-	int	i;
-
-	i = -1;
-	while (g->map[++i])
-		i++;
-	printf("max = %d\n", i);
-	if (!error_messages_parser(walls(g->map, i)))
-		return (0);
-	printf("yo\n");
 	return (1);
 }

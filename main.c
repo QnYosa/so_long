@@ -6,7 +6,7 @@
 /*   By: dyoula <dyoula@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/25 19:48:45 by dyoula            #+#    #+#             */
-/*   Updated: 2022/01/15 21:58:39 by dyoula           ###   ########.fr       */
+/*   Updated: 2022/01/16 18:43:07 by dyoula           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,31 @@ int	handle_input(int keysym, t_data *data)
 	if (keysym == XK_Escape)
 		mlx_destroy_window(data->mlx_ptr, data->win_ptr);
 	return (0);
+}
+
+int	check_errors(t_game *g)
+{
+	int	i;
+
+	i = 0;
+	while (g->map[i])
+		i++;
+	printf("max = %d\n", i);
+	if (!error_messages_parser(walls(g->map, i)) || !right_number_pce(g->map))
+		return (0);
+	// if (!playable(g->map))
+	// 	return (0);
+	printf("yo\n");
+	return (1);
+}
+
+int	check_file(char *file)
+{
+	if (open(file, O_RDONLY) == -1)
+	{
+		return (0);
+	}
+	return (1);
 }
 
 int	main(int argc, char **argv)
