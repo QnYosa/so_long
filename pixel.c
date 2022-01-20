@@ -1,21 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init_struct.c                                      :+:      :+:    :+:   */
+/*   pixel.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dyoula <dyoula@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/01/15 16:42:16 by dyoula            #+#    #+#             */
-/*   Updated: 2022/01/20 23:12:54 by dyoula           ###   ########.fr       */
+/*   Created: 2022/01/20 23:31:19 by dyoula            #+#    #+#             */
+/*   Updated: 2022/01/20 23:32:50 by dyoula           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-void	init_struct(t_game *g, int argc, char **argv)
+int	mlx_pixel_put(void *mlx_ptr, void *win_ptr, int x, int y, int color)
 {
-	g->ac = argc;
-	g->av = argv;
-	g->map = NULL;
-	g->nb_lines = 0;
+	return (0);
 }

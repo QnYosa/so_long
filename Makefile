@@ -1,14 +1,14 @@
 NAME	= so_long
 
 SRCS	= main.c check_map_1.c init.c init_struct.c utils.c \
-
+		leaks.c handles.c pixel.c \
 OBJS	= ${SRCS:.c=.o}
 
 LIBFT	= libft/libft.a
 
-CFLAGS	= -Wall -Werror -Wextra
+CFLAGS	= -Wall -Werror -Wextra -g
 
-CC		= clang
+CC		= cc
 
 RM		= rm -f
 

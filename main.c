@@ -6,30 +6,25 @@
 /*   By: dyoula <dyoula@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/25 19:48:45 by dyoula            #+#    #+#             */
-/*   Updated: 2022/01/16 19:27:06 by dyoula           ###   ########.fr       */
+/*   Updated: 2022/01/20 23:24:07 by dyoula           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
+# include "mlx/mlx.h"
+# include <X11/keysym.h>
+#include <X11/X.h>
 
-typedef struct s_data
+int	handle_no_event(void *g)
 {
-	void	*mlx_ptr;
-	void	*win_ptr;
-}	t_data;
-
-// int	handle_no_event(void *data)
-// {
-// 	/* This function needs to exist, but it is useless for the moment */
-// 	return ((int)data);
-// }
-
-int	handle_input(int keysym, t_data *data)
-{
-	if (keysym == XK_Escape)
-		mlx_destroy_window(data->mlx_ptr, data->win_ptr);
-	return (0);
+	/* This function needs to exist, but it is useless for the moment */
+	// return ((int)g);
+	(void)g;
+	return (5);
 }
+
+
+
 
 int	check_errors(t_game *g)
 {
@@ -52,7 +47,6 @@ int	check_file(char *file)
 
 int	main(int argc, char **argv)
 {
-	t_data	data;
 	t_game	g;
 
 	if (argc != 2)
@@ -60,19 +54,29 @@ int	main(int argc, char **argv)
 	init_struct(&g, argc, argv);
 	if (!parse_and_check_errors(&g))
 		return (-1);
-	data.mlx_ptr = mlx_init();
-	if (data.mlx_ptr == NULL)
+	g.window.mlx_ptr = mlx_init();
+	if (g.window.mlx_ptr == NULL)
 		return (-1);
-	data.win_ptr = mlx_new_window(data.mlx_ptr, 600, 300, "closing_window");
-	if (data.win_ptr == NULL)
+	g.window.win_ptr = mlx_new_window(g.window.mlx_ptr, 600, 300, "Yu Yu Hakusho");
+	g.img.img = mlx_new_image(g.window.mlx_ptr, 600, 300);
+	if (g.window.win_ptr == NULL)
 	{
-		free(data.win_ptr);
+		free(g.window.win_ptr);
 		return (-1);
 	}
-	// mlx_loop_hook(data.mlx_ptr, &handle_no_event, &data);
-	// mlx_key_hook(data.win_ptr, &handle_input, &data);
-	// mlx_loop(data.mlx_ptr);
-	// mlx_destroy_display(data.mlx_ptr);
-	// free(data.mlx_ptr);
+	// img.addr = mlx_get_g_addr(img.img, &img.bits_per_pixel, \
+	// &img.line_length, &img.endian);
+	mlx_loop_hook(g.window.mlx_ptr, &handle_no_event, &g.window);
+	mlx_hook(g.window.win_ptr, KeyPress, KeyPressMask, &handle_keypress, &g.window);
+	mlx_hook(g.window.win_ptr, KeyRelease, KeyReleaseMask, &handle_keyrelease, &g.window);
+	mlx_key_hook(g.window.win_ptr, &handle_input, &g.window);
+	mlx_loop(g.window.mlx_ptr);
+	mlx_destroy_display(g.window.mlx_ptr);
+	mlx_destroy_window(g.window.mlx_ptr, g.window.win_ptr);
+	free(g.window.win_ptr);
+	free(g.window.mlx_ptr);
+	free(g.img.img);
+	free_d_tab(g.map);
+	g.map = NULL;
 	return (0);
 }
