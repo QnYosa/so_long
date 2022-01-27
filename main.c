@@ -6,77 +6,85 @@
 /*   By: dyoula <dyoula@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/25 19:48:45 by dyoula            #+#    #+#             */
-/*   Updated: 2022/01/20 23:24:07 by dyoula           ###   ########.fr       */
+/*   Updated: 2022/01/27 19:48:41 by dyoula           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
-# include "mlx/mlx.h"
-# include <X11/keysym.h>
+#include "mlx/mlx.h"
+#include <X11/keysym.h>
 #include <X11/X.h>
 
-int	handle_no_event(void *g)
+void	game_running(t_vars *g)
 {
-	/* This function needs to exist, but it is useless for the moment */
-	// return ((int)g);
-	(void)g;
-	return (5);
+	find_player_position(g, &g->data.player_x, &g->data.player_y);
+	mlx_loop_hook(g->data.mlx_ptr, &handle_input, g);
+	mlx_key_hook(g->data.win_ptr, &handle_input, g);
+	mlx_hook(g->data.win_ptr, KeyPress, KeyPressMask, \
+	&handle_keypress, g);
+	mlx_hook(g->data.win_ptr, 33, 131072, &end_game, g);
+	mlx_loop(g->data.mlx_ptr);
 }
 
-
-
-
-int	check_errors(t_game *g)
+int	points_points(char *str)
 {
+	int	point;
 	int	i;
 
-	i = 0;
-	while (g->map[i])
-		i++;
-	if (!error_messages_parser(walls(g->map, i)) || !right_number_pce(g->map))
-		return (0);
+	point = 0;
+	i = -1;
+	while (str[++i])
+	{
+		if (str[i] == '.')
+			point++;
+		if (point > 1)
+		{
+			printf("fc\n");
+			exit(0);
+		}
+	}
 	return (1);
 }
 
-int	check_file(char *file)
+int	points(char *str)
 {
-	if (open(file, O_RDONLY) == -1)
+	int	i;
+	int	len;
+
+	len = (int)ft_strlen(str);
+	i = 0;
+	while (str[i] != '.')
+		i++;
+	if (str[i - 1] == '/')
 		return (0);
+	if (ft_strncmp(&str[len - 4], ".ber", 4) != 0)
+	{
+		printf("fc\n");
+		return (0);
+	}
 	return (1);
 }
 
 int	main(int argc, char **argv)
 {
-	t_game	g;
+	t_vars	g;
+	int		i;
 
-	if (argc != 2)
+	i = -1;
+	if (argc != 2 || !points(argv[1]) || !points_points(argv[1]))
 		return (0);
-	init_struct(&g, argc, argv);
+	g = init_struct(argc, argv);
+	test_image(&g);
 	if (!parse_and_check_errors(&g))
-		return (-1);
-	g.window.mlx_ptr = mlx_init();
-	if (g.window.mlx_ptr == NULL)
-		return (-1);
-	g.window.win_ptr = mlx_new_window(g.window.mlx_ptr, 600, 300, "Yu Yu Hakusho");
-	g.img.img = mlx_new_image(g.window.mlx_ptr, 600, 300);
-	if (g.window.win_ptr == NULL)
-	{
-		free(g.window.win_ptr);
-		return (-1);
-	}
-	// img.addr = mlx_get_g_addr(img.img, &img.bits_per_pixel, \
-	// &img.line_length, &img.endian);
-	mlx_loop_hook(g.window.mlx_ptr, &handle_no_event, &g.window);
-	mlx_hook(g.window.win_ptr, KeyPress, KeyPressMask, &handle_keypress, &g.window);
-	mlx_hook(g.window.win_ptr, KeyRelease, KeyReleaseMask, &handle_keyrelease, &g.window);
-	mlx_key_hook(g.window.win_ptr, &handle_input, &g.window);
-	mlx_loop(g.window.mlx_ptr);
-	mlx_destroy_display(g.window.mlx_ptr);
-	mlx_destroy_window(g.window.mlx_ptr, g.window.win_ptr);
-	free(g.window.win_ptr);
-	free(g.window.mlx_ptr);
-	free(g.img.img);
-	free_d_tab(g.map);
-	g.map = NULL;
+		return (free_pre_game(&g));
+	g.data.mlx_ptr = mlx_init();
+	if (g.data.mlx_ptr == NULL)
+		return (free_pre_game(&g));
+	xpm_to_image(&g);
+	if (size_window(&g) < 0)
+		return (0);
+	dress_table(&g);
+	close(g.fd);
+	game_running(&g);
 	return (0);
 }

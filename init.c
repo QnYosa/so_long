@@ -6,7 +6,7 @@
 /*   By: dyoula <dyoula@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/10 19:18:33 by dyoula            #+#    #+#             */
-/*   Updated: 2022/01/16 19:23:23 by dyoula           ###   ########.fr       */
+/*   Updated: 2022/01/26 00:29:47 by dyoula           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,14 @@ int	error_messages_read_file(int n)
 	return (1);
 }
 
-int	file_reader(t_game *g, int fd)
+void	ciao(char *txt)
+{
+	free(txt);
+	printf("Error empty file.\n");
+	exit (1);
+}
+
+int	file_reader(t_vars *g, int fd)
 {
 	char	buf[2];
 	char	*txt;
@@ -39,30 +46,36 @@ int	file_reader(t_game *g, int fd)
 		i++;
 	}
 	if (!error_messages_read_file(i))
-		return (0);
-	g->map = ft_split(txt, '\n');
-	if (!g->map)
 	{
 		free(txt);
 		return (0);
 	}
+	g->map = ft_split(txt, '\n');
+	if (!g->map)
+		ciao(txt);
 	free(txt);
 	return (1);
 }
 
-int	init_parse(t_game *g)
+int	init_parse(t_vars *g)
 {
-	int	fd;
-
-	fd = open(g->av[1], O_RDONLY);
-	if (fd < 0)
-		return (0);
-	if (!file_reader(g, fd))
-		return (0);
+	g->fd = open(g->av[1], O_DIRECTORY);
+	if (g->fd > 0)
+	{
+		printf("It's a directory Dummy\n");
+		close(g->fd);
+		exit(-1);
+	}
+	else
+		g->fd = open(g->av[1], O_RDONLY);
+	if (!file_reader(g, g->fd))
+	{
+		exit (0);
+	}
 	return (1);
 }
 
-int	parse_and_check_errors(t_game *g)
+int	parse_and_check_errors(t_vars *g)
 {
 	if (!init_parse(g) || !check_errors(g))
 		return (0);

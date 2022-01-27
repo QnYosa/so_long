@@ -1,7 +1,11 @@
 NAME	= so_long
 
-SRCS	= main.c check_map_1.c init.c init_struct.c utils.c \
-		leaks.c handles.c pixel.c \
+SRCS	= 	main.c \
+			check_map_1.c init.c init_struct.c utils.c \
+			leaks.c handles.c move_img.c image.c \
+			dress_map.c window.c \
+			player.c move.c errors.c \
+
 OBJS	= ${SRCS:.c=.o}
 
 LIBFT	= libft/libft.a
@@ -12,7 +16,7 @@ CC		= cc
 
 RM		= rm -f
 
-FL_MLX = -ldl -lmlx -Lmlx -lm -lXext -lX11 mlx/libmlx.a
+FL_MLX = -ldl -lmlx -Lmlx -lm -lXext -lX11 mlx/libmlx_Linux.a
 
 all:	${NAME}
 

@@ -6,19 +6,12 @@
 /*   By: dyoula <dyoula@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/10 18:42:01 by dyoula            #+#    #+#             */
-/*   Updated: 2022/01/16 17:01:47 by dyoula           ###   ########.fr       */
+/*   Updated: 2022/01/27 19:05:01 by dyoula           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-/* premiere ligne = que des 1 
-** toujours la meme len ** done
-** un seul personnage sinon on quit (seul truc unique)**
-** doit commencer et se terminer par un 1 **
-** s'assurer qu'il n'y a que des caracteres autorises **
-** compter les nombres d'elements **
-*/
 int	walls(char **map, int max)
 {
 	int	i;
@@ -65,27 +58,33 @@ int	error_messages_parser(int n)
 		return (1);
 }
 
-int	error_messages_game(int tab[3])
+int	error_messages_game(int tab[3], t_vars *g)
 {
 	if (tab[0] != 1)
 	{
 		ft_putstr_fd("error\nOnly one player accepted\n", 2);
-		return (0);
+		free_d_tab(g->map);
+		free(g->map);
+		exit(0);
 	}
 	else if (tab[1] < 1)
 	{
 		ft_putstr_fd("error\nNo Collectibles\n", 2);
-		return (0);
+		free_d_tab(g->map);
+		free(g->map);
+		exit(0);
 	}
 	else if (tab[2] < 1)
 	{
 		ft_putstr_fd("error\nNo exit\n", 2);
-		return (0);
+		free_d_tab(g->map);
+		free(g->map);
+		exit(0);
 	}
 	return (1);
 }
 
-int	right_number_pce(char **map)
+int	right_number_pce(char **map, t_vars *g)
 {
 	int	i;
 	int	j;
@@ -106,9 +105,11 @@ int	right_number_pce(char **map)
 				tab[1]++;
 			else if (map[i][j] == 'E')
 				tab[2]++;
+			else if (map[i][j] != '1' && map[i][j] != '0')
+				return (0);
 		}
 	}
-	return (error_messages_game(tab));
+	return (error_messages_game(tab, g));
 }
 
 int	forbidden_caracters(char **map)
